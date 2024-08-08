@@ -29,7 +29,7 @@ export default interface LoggedInUser {
   id: string;
   accessToken: string;
   refreshToken: string;
-  userName: string;
+  username: string;
   userEmail: string;
   changedPassword: string | null;
   roles: string[];

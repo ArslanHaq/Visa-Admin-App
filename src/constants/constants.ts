@@ -53,6 +53,7 @@ export enum ApiRoutes {
   SUBMITAPPLICATION = "api/Application/Submit",
   COATOFARMS = "CoatOfArms",
   FLAGDETAILS = "FlagsDetail",
+  PROCESSINGQUEUE = "api/ProcessingQueue/All",
 }
 
 export const maritalStatus = [

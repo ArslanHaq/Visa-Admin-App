@@ -12,6 +12,7 @@ import NavbarItem from '../atoms/NavbarItemComponent';
 import { OriginDto } from '../organisms/Signup.dto';
 import { getCountryOrigin } from '@/server/feeder';
 import { toast } from 'react-toastify';
+import { signOut } from 'next-auth/react';
 
 export default function NavbarComponent() {
   // const { data: session } = useSession();
@@ -44,7 +45,7 @@ export default function NavbarComponent() {
   const shouldHideNavbar = hiddenPaths.some((path) => pathname.includes(path));
 
   const handleSignOut = async () => {
-    // await signOut({ redirect: false }); // Prevent default redirect
+    await signOut({ redirect: false }); // Prevent default redirect
     router.push(Pages.SIGNIN); // Redirect to the desired URL
   };
 

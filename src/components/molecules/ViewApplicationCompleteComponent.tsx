@@ -242,7 +242,7 @@ export default function ViewApplicationCompleteComponent({
   const occupationOptions = occupation.map((item: any) => {
     return { value: item.occupationId, label: item.description }
   })
-  console.log(visaTypeOptions, nationalitiesOptions, occupationOptions, maritalStatus, sex, sponsorType, accomodationType)
+  // console.log(visaTypeOptions, nationalitiesOptions, occupationOptions, maritalStatus, sex, sponsorType, accomodationType)
   return (
     <>
       {

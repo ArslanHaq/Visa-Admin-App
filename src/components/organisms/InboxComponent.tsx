@@ -3,59 +3,47 @@ import { Pages } from '@/constants/constants';
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-// import { getApplicationList } from '@/server/Application';
 import { toast } from 'react-toastify';
 import Loader from '../atoms/Loader';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import classNames from 'classnames';
 import { DataList } from '@/dto/ApplicationData.dto';
 import ApplicationCard from '../molecules/ApplicationCard';
+import { getApplicationList } from '@/server/application';
 
 export default function InboxComponent() {
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [applications, setApplications] = useState<DataList[]>([
-    {
-      trackingId: "123456",
-      lastSection: "personal",
-      nationality: "Nigerian",
-      status: "pending",
-      userId: "123456",
-      visaCurrency: "USD",
-      visaType: "Business",
-      visaFee: '100',
-      visaSubType: "Tourist",
-    }
-  ]);
+  const [applications, setApplications] = useState<DataList[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  // const isInitialMount = useRef(true);
+  const isInitialMount = useRef(true);
 
-  // useEffect(() => {
-  //   if (isInitialMount.current) {
-  //     getApplicationDataList();
-  //     isInitialMount.current = false;
-  //   }
-  // }, []);
-  // async function getApplicationDataList() {
-  //   let response = await getApplicationList(page, 5);
-  //   if (response.error && response.error.length > 0) {
-  //     response.error.forEach((err) => {
-  //       toast.error(`Error ${err.code}: ${err.description}`);
-  //     });
-  //   } else {
-  //     const newApplications = response.data?.dataList as DataList[];
-  //     if (newApplications.length === 0) {
-  //       setHasMore(false);
-  //     } else {
-  //       setApplications((prevApplications) => [
-  //         ...prevApplications,
-  //         ...newApplications,
-  //       ]);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      getApplicationDataList();
+      isInitialMount.current = false;
+    }
+  }, []);
+  async function getApplicationDataList() {
+    let response = await getApplicationList(page, 5);
+    if (response.error && response.error.length > 0) {
+      response.error.forEach((err) => {
+        toast.error(`Error ${err.code}: ${err.description}`);
+      });
+    } else {
+      const newApplications = response.data?.dataList as DataList[];
+      if (newApplications.length === 0) {
+        setHasMore(false);
+      } else {
+        setApplications((prevApplications) => [
+          ...prevApplications,
+          ...newApplications,
+        ]);
 
-  //       setPage(page + 1);
-  //     }
-  //   }
-  // }
+        setPage(page + 1);
+      }
+    }
+  }
 
 
 
@@ -114,8 +102,7 @@ export default function InboxComponent() {
 
           <InfiniteScroll
             dataLength={applications.length}
-            // next={page > 1 ? getApplicationDataList : () => { }}
-            next={() => { }}
+            next={page > 1 ? getApplicationDataList : () => { }}
             hasMore={hasMore}
             loader={<Loader />}
             endMessage={

@@ -1,15 +1,10 @@
-// import { getServerSession } from "next-auth";
-// import { authOptions } from "@/utils/AuthOptions";
-// import { ClientSession } from "@/constants/constants";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/AuthOptions";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 async function getHeaders() {
-  // const session: any = await getServerSession(authOptions);
-  const session = {
-    user: {
-      accessToken: "",
-    },
-  };
+  const session: any = await getServerSession(authOptions);
+
   return {
     "Content-Type": "application/json",
     Authorization: `Bearer ${session?.user.accessToken}`,

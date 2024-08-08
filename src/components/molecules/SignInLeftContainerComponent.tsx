@@ -12,6 +12,7 @@ import { OriginDto } from '../organisms/Signup.dto';
 import InputComponent from '../atoms/InputComponent';
 import classNames from 'classnames';
 import Image from 'next/image';
+import { signOut } from 'next-auth/react';
 
 interface Props {
   origin: OriginDto;
@@ -22,13 +23,13 @@ export default function SignInLeftContainerComponent({ origin }: Props) {
 
   const { formValues, errors, setFormValues, setErrors, handleSubmit } =
     useSignIn();
-  // const handleSignOut = async () => {
-  //   await signOut({ redirect: false }); // Prevent default redirect
-  //   router.push(Pages.SIGNIN); // Redirect to the desired URL
-  // };
-  // useEffect(() => {
-  //   handleSignOut();
-  // }, []);
+  const handleSignOut = async () => {
+    await signOut({ redirect: false }); // Prevent default redirect
+    router.push(Pages.SIGNIN); // Redirect to the desired URL
+  };
+  useEffect(() => {
+    handleSignOut();
+  }, []);
 
   return (
     <>

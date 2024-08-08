@@ -4,8 +4,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Pages } from "@/constants/constants";
+import { signIn } from "next-auth/react";
 
-// import { signIn } from "next-auth/react";
 export const useSignIn = () => {
   const router = useRouter();
   const [formValues, setFormValues] = useState<SignInDto>({
@@ -19,25 +19,24 @@ export const useSignIn = () => {
   });
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(Pages.INBOX);
     const newErrors = validateSignInForm(formValues);
     setErrors(newErrors);
     const hasErrors = Object.values(newErrors).some((error) => error !== "");
-    // if (!hasErrors) {
-    //   const result = await signIn("credentials", {
-    //     redirect: false,
-    //     username: formValues.userName,
-    //     password: formValues.password,
-    //     callbackUrl: `${window.location.origin}${Pages.TWOFACTORAUTH}`,
-    //   });
-    //   if (result?.error) {
-    //     toast.error(`Invalid Credentials`);
-    //   } else {
-    //     toast.success("Login successful");
-    //     resetForm();
-    //     router.push(Pages.TWOFACTORAUTH);
-    //   }
-    // }
+    if (!hasErrors) {
+      const result = await signIn("credentials", {
+        redirect: false,
+        username: formValues.userName,
+        password: formValues.password,
+        callbackUrl: `${window.location.origin}${Pages.INBOX}`,
+      });
+      if (result?.error) {
+        toast.error(`Invalid Credentials`);
+      } else {
+        toast.success("Login successful");
+        resetForm();
+        router.push(Pages.INBOX);
+      }
+    }
   };
   const resetForm = () => {
     setFormValues({
