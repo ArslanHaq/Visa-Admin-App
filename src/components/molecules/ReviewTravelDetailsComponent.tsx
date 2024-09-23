@@ -26,7 +26,7 @@ export default function ReviewTravelDetailsComponent({
   });
   return (
     <>
-      <div className="flex w-full items-center justify-center gap-x-44 mt-6 lg:flex-row flex-col">
+      <div className="flex w-full items-center justify-center gap-x-44 mt-6 md:flex-row flex-col">
         <InputComponent
           label={'Travel Date'}
           maxLength={30}
@@ -35,7 +35,7 @@ export default function ReviewTravelDetailsComponent({
           placeholder={'Enter your travel Date'}
           name={'travelDate'}
           value={travelFormValues.travelDate.split('T')[0]}
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             console.log(e)
           }
@@ -51,7 +51,7 @@ export default function ReviewTravelDetailsComponent({
           placeholder={'Enter your Arrival Port'}
           name={'arrivalPort'}
           value={travelFormValues.arrivalPort}
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             console.log(e)
           }
@@ -61,7 +61,7 @@ export default function ReviewTravelDetailsComponent({
         />
       </div>
       <div className="mt-4 w-full">
-        <div className="flex w-full items-center justify-center gap-x-44 lg:flex-row flex-col">
+        <div className="flex w-full items-center justify-center gap-x-44 md:flex-row flex-col">
           <InputComponent
             label={'City / Cities'}
             maxLength={50}
@@ -70,7 +70,7 @@ export default function ReviewTravelDetailsComponent({
             placeholder={''}
             name={'cities'}
             value={travelFormValues.cities}
-            className="w-1/2 lg:w-1/4"
+            className="w-3/4 md:w-1/4"
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               console.log(e)
             }
@@ -82,15 +82,26 @@ export default function ReviewTravelDetailsComponent({
         </div>
       </div>
       <div className="w-full">
-        <div className="my-3 flex w-full items-center justify-center gap-x-44">
-          <div className="w-1/4">
-            <p className="font-bold text-logoColorBlue underline">
-              Travel History:
+        <div className="flex w-full items-center justify-center gap-x-44">
+          <div
+            className="flex w-3/5 cursor-pointer"
+
+          >
+            <p className="md:text-base font-bold text-logoColorBlue  underline underline-offset-4 my-7">
+              {' '}
+              Travel & History Details:
             </p>
           </div>
-          <div className="w-1/4"></div>
         </div>
-
+        {
+          travelFormValues.travelHistory?.length === 0 && (
+            <div className="flex justify-center items-center h-full mt-5">
+              <p className="text-base font-semibold text-logoColorBlue">
+                No travel history added
+              </p>
+            </div>
+          )
+        }
         {travelFormValues.travelHistory?.map((travelHistory, index) => (
           <div className="my-2 flex w-full justify-center" key={index}>
             <TravelHistoryCardComponent

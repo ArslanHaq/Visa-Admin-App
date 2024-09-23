@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { NavbarTitles, Pages } from '@/constants/constants';
+import { Colors, NavbarTitles, Pages } from '@/constants/constants';
 // import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 // import { getCountryOrigin } from '@/server/Signup';
@@ -12,13 +12,13 @@ import NavbarItem from '../atoms/NavbarItemComponent';
 import { OriginDto } from '../organisms/Signup.dto';
 import { getCountryOrigin } from '@/server/feeder';
 import { toast } from 'react-toastify';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import { capitalizeFirstLetter, capitalizeWords } from '@/constants/functions';
+import CrossSvg from '../atoms/Svg/Cross';
 
 export default function NavbarComponent() {
-  // const { data: session } = useSession();
-  const session = {
-    user: 's'
-  };
+  const { data: session } = useSession();
+
   const [coatSrc, setCoatSrc] = useState('')
   const [countryName, setCountryName] = useState('')
   const router = useRouter();
@@ -34,6 +34,21 @@ export default function NavbarComponent() {
     else if (pathname.includes('signin')) {
       setPages(NavbarTitles.SIGNIN);
     }
+    else if (pathname.includes('workflow')) {
+      setPages(NavbarTitles.WORKFLOW);
+    }
+    else if (pathname.includes('users')) {
+      setPages(NavbarTitles.USERS);
+    }
+    else if (pathname.includes('libraries')) {
+      setPages(NavbarTitles.LIBRARIES);
+    }
+    else if (pathname.includes('buisnessRules')) {
+      setPages(NavbarTitles.BUISNESSRULES);
+    }
+    else if (pathname.includes('documents')) {
+      setPages(NavbarTitles.DOCUMENTS);
+    }
     else {
       setPages(NavbarTitles.INBOX);
     }
@@ -45,6 +60,8 @@ export default function NavbarComponent() {
   const shouldHideNavbar = hiddenPaths.some((path) => pathname.includes(path));
 
   const handleSignOut = async () => {
+
+    setIsMobileMenuOpen(false)
     await signOut({ redirect: false }); // Prevent default redirect
     router.push(Pages.SIGNIN); // Redirect to the desired URL
   };
@@ -70,6 +87,9 @@ export default function NavbarComponent() {
   useEffect(() => {
     getCountryData();
   }, [session]);
+
+  const isInitiator = session?.user?.roles.includes("initiater") || session?.user?.roles.includes("verification") || session?.user?.roles.includes("decision_maker");
+  const isAdmin = session?.user?.roles.includes("admin");
   return (
     <>
 
@@ -78,7 +98,7 @@ export default function NavbarComponent() {
           <></>
         ) : (
           <>
-            <div className="flex items-center justify-between bg-transparent px-3 py-2 lg:justify-around lg:px-0">
+            <div className="flex items-center justify-between bg-transparent px-2 md:px-20 py-2 ">
               <div className={classNames("flex items-center justify-start ",
                 // {
                 //   'lg:-ml-36': !session?.user
@@ -88,8 +108,8 @@ export default function NavbarComponent() {
                 // }
               )}>
                 <Image
-                  src={coatSrc}
-                  alt="Picture of the author"
+                  src={coatSrc ? coatSrc : '/next.svg'}
+                  alt='/next.svg'
                   width={90}
                   height={90}
                   quality={100}
@@ -110,29 +130,70 @@ export default function NavbarComponent() {
 
                 </div>
               </div>
-              <div className="hidden items-center gap-x-20 lg:flex -ml-16">
-                <NavbarItem
-                  href={session?.user ? Pages.INBOX : Pages.SIGNIN}
-                  label={NavbarTitles.INBOX}
-                  active={pages === NavbarTitles.INBOX}
-                  onClick={() => {
-                    if (session?.user)
-                      changePage(NavbarTitles.INBOX)
-                  }
-                  }
-                // disabled={session?.user ? false : true}
+              <div className="hidden items-center gap-x-10 lg:flex -ml-40">
+                {
+                  isInitiator && (
+                    <NavbarItem
+                      href={session?.user ? Pages.INBOX : Pages.SIGNIN}
+                      label={NavbarTitles.INBOX}
+                      active={pages === NavbarTitles.INBOX}
+                      onClick={() => {
+                        if (session?.user)
+                          changePage(NavbarTitles.INBOX)
+                      }
+                      }
+                    // disabled={session?.user ? false : true}
 
-                />
-                <NavbarItem
-                  href={session?.user ? Pages.REFERED : Pages.SIGNIN}
-                  label={NavbarTitles.REFERED}
-                  active={pages === NavbarTitles.REFERED}
-                  onClick={() => {
-                    if (session?.user)
-                      changePage(NavbarTitles.REFERED)
-                  }}
-                // disabled={session?.user ? false : true}
-                />{' '}
+                    />
+                  )
+                }
+                {
+                  isAdmin && (
+                    <>
+                      <NavbarItem
+                        href={session?.user ? Pages.USERS : Pages.SIGNIN}
+                        label={NavbarTitles.USERS}
+                        active={pages === NavbarTitles.USERS}
+                        onClick={() => {
+                          if (session?.user)
+                            changePage(NavbarTitles.USERS)
+                        }}
+                      // disabled={session?.user ? false : true}
+                      />{' '}
+                      <NavbarItem
+                        href={session?.user ? Pages.LIBRARIES : Pages.SIGNIN}
+                        label={NavbarTitles.LIBRARIES}
+                        active={pages === NavbarTitles.LIBRARIES}
+                        onClick={() => {
+                          if (session?.user)
+                            changePage(NavbarTitles.LIBRARIES)
+                        }}
+                      // disabled={session?.user ? false : true}
+                      />{' '}
+                      <NavbarItem
+                        href={session?.user ? Pages.BUISNESSRULES : Pages.SIGNIN}
+                        label={NavbarTitles.BUISNESSRULES}
+                        active={pages === NavbarTitles.BUISNESSRULES}
+                        onClick={() => {
+                          if (session?.user)
+                            changePage(NavbarTitles.BUISNESSRULES)
+                        }}
+                      // disabled={session?.user ? false : true}
+                      />{' '}
+                      <NavbarItem
+                        href={session?.user ? Pages.DOCUMENTS : Pages.SIGNIN}
+                        label={NavbarTitles.DOCUMENTS}
+                        active={pages === NavbarTitles.DOCUMENTS}
+                        onClick={() => {
+                          if (session?.user)
+                            changePage(NavbarTitles.DOCUMENTS)
+                        }}
+                      // disabled={session?.user ? false : true}
+                      />{' '}
+                    </>
+                  )
+                }
+
               </div>
               {session?.user ? (
                 <>
@@ -153,6 +214,7 @@ export default function NavbarComponent() {
                 >
                 </Link>
               )}
+
               <div className="flex items-center lg:hidden">
                 <button
                   className="text-logoColorBlue focus:outline-none"
@@ -174,33 +236,95 @@ export default function NavbarComponent() {
               </div>
             </div>
             {isMobileMenuOpen && (
-              <div className="absolute z-10 w-full bg-slate-100 py-2 text-base lg:hidden">
-                <div className='font-bold absolute right-10 text-xl cursor-pointer' onClick={() => setIsMobileMenuOpen(false)}>
-                  x
+              <div className="absolute z-10 w-full bg-slate-100 py-10 text-base lg:hidden">
+                <div className='font-bold absolute right-6 text-xl cursor-pointer' onClick={() => setIsMobileMenuOpen(false)}>
+                  <CrossSvg color={Colors.PRIMARYBLUE} size={18} />
                 </div>
-                <div className="flex justify-center py-3 mt-10">
-                  <NavbarItem
-                    href={session?.user ? Pages.INBOX : Pages.SIGNIN}
-                    label={NavbarTitles.INBOX}
-                    active={pages === NavbarTitles.INBOX}
-                    onClick={() => {
-                      if (session?.user)
-                        changePage(NavbarTitles.INBOX)
-                    }
-                    }
-                  />
-                </div>
-                <div className="flex justify-center py-3">
-                  <NavbarItem
-                    href={session?.user ? Pages.REFERED : Pages.SIGNIN}
-                    label={NavbarTitles.REFERED}
-                    active={pages === NavbarTitles.REFERED}
-                    onClick={() => {
-                      if (session?.user)
-                        changePage(NavbarTitles.REFERED)
-                    }}
-                  />{' '}
-                </div>
+
+                {
+                  isInitiator && (
+                    <div className="flex justify-center py-1 ">
+                      <NavbarItem
+                        href={session?.user ? Pages.INBOX : Pages.SIGNIN}
+                        label={NavbarTitles.INBOX}
+                        active={pages === NavbarTitles.INBOX}
+                        onClick={() => {
+                          if (session?.user)
+                            changePage(NavbarTitles.INBOX)
+
+                          setIsMobileMenuOpen(false)
+                        }
+                        }
+                      // disabled={session?.user ? false : true}
+
+                      />
+                    </div>
+                  )
+                }
+                {isAdmin &&
+                  < >   <div className="flex justify-center py-1 ">
+                    <NavbarItem
+                      href={session?.user ? Pages.USERS : Pages.SIGNIN}
+                      label={NavbarTitles.USERS}
+                      active={pages === NavbarTitles.USERS}
+                      onClick={() => {
+                        if (session?.user)
+                          changePage(NavbarTitles.USERS)
+
+                        setIsMobileMenuOpen(false)
+                      }}
+                    // disabled={session?.user ? false : true}
+                    />{' '}
+                  </div>
+
+                    <div className="flex justify-center py-2 ">
+                      <NavbarItem
+                        href={session?.user ? Pages.LIBRARIES : Pages.SIGNIN}
+                        label={NavbarTitles.LIBRARIES}
+                        active={pages === NavbarTitles.LIBRARIES}
+                        onClick={() => {
+                          if (session?.user)
+                            changePage(NavbarTitles.LIBRARIES)
+
+
+                          setIsMobileMenuOpen(false)
+                        }}
+                      // disabled={session?.user ? false : true}
+                      />{' '}
+                    </div>
+
+                    <div className="flex justify-center py-2 ">
+                      <NavbarItem
+                        href={session?.user ? Pages.BUISNESSRULES : Pages.SIGNIN}
+                        label={NavbarTitles.BUISNESSRULES}
+                        active={pages === NavbarTitles.BUISNESSRULES}
+                        onClick={() => {
+                          if (session?.user)
+                            changePage(NavbarTitles.BUISNESSRULES)
+
+
+                          setIsMobileMenuOpen(false)
+                        }}
+                      // disabled={session?.user ? false : true}
+                      />{' '}
+                    </div>
+
+                    <div className="flex justify-center py-2">
+                      <NavbarItem
+                        href={session?.user ? Pages.DOCUMENTS : Pages.SIGNIN}
+                        label={NavbarTitles.DOCUMENTS}
+                        active={pages === NavbarTitles.DOCUMENTS}
+                        onClick={() => {
+                          if (session?.user)
+                            changePage(NavbarTitles.DOCUMENTS)
+
+
+                          setIsMobileMenuOpen(false)
+                        }}
+                      // disabled={session?.user ? false : true}
+                      />{' '}
+                    </div>
+                  </>}
                 <div className="flex justify-center py-3">
                   {session ? (
                     <>
@@ -226,8 +350,19 @@ export default function NavbarComponent() {
                     </Link>
                   )}
                 </div>
+
               </div>
             )}
+            <div className="hidden lg:flex justify-end pr-20 ">
+              <div>
+                <p className="text-center text-sm font-serif font-bold text-logoColorBlue">
+                  <span className="text-sm text-logoColorGreen font-bold font-sans">Username :</span>  {session?.user && (session?.user.username as string)}
+                </p>
+                <p className="text-center text-sm font-serif font-bold text-logoColorBlue">
+                  <span className="text-sm text-logoColorGreen font-bold font-sans">Role :</span>  {session?.user && (session?.user.roles[0] as string)}
+                </p>
+              </div>
+            </div>
           </>
         )}
       </>

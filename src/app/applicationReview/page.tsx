@@ -1,5 +1,5 @@
 import ViewApplicationCompleteComponent from "@/components/molecules/ViewApplicationCompleteComponent";
-import { CountriesDataDto, OccupationDto } from "@/components/organisms/Signup.dto";
+import { CountriesDataDto, OccupationResponse } from "@/components/organisms/Signup.dto";
 import { accomodationType, maritalStatus, sex, sponsorType } from "@/constants/constants";
 import { visaTypeResponse } from "@/dto/ApplicationData.dto";
 import { getCountryData, getOccupationsData, getVisaTypes } from "@/server/feeder";
@@ -14,10 +14,9 @@ export default async function ApplicationReviewPage(
     }
 ) {
     const applicationTrackingID = searchParams.trackingId as string;
-    const lastSection = searchParams.lastSection as string;
-    const visaTypes: visaTypeResponse = await getVisaTypes();
+    const ApplicationStatus = searchParams.status as string;
     const nationalities: CountriesDataDto = await getCountryData();
-    const occupations: OccupationDto = await getOccupationsData();
+    const occupations: OccupationResponse = await getOccupationsData();
     return (
         <div>
             <ViewApplicationCompleteComponent
@@ -27,15 +26,8 @@ export default async function ApplicationReviewPage(
                 occupation={occupations.data}
                 sex={sex}
                 sponsorType={sponsorType}
-                status="in progress"
+                status={ApplicationStatus}
                 trackingId={applicationTrackingID}
-                visaSubType={[
-                    {
-                        value: 1,
-                        label: 'buisness'
-                    }
-                ]}
-                visaType={visaTypes.data}
             />
         </div>
     );

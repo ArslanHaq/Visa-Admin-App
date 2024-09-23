@@ -18,7 +18,6 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
         let user: LoggedInUser | null = null;
-
         const res = await login({
           userName: credentials.username,
           password: credentials.password,

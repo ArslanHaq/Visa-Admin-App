@@ -1,49 +1,40 @@
 'use client';
-import { Pages } from '@/constants/constants';
-
+import { ApplicationStatus, InitiatorApplicationStatus, Pages } from '@/constants/constants';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import Loader from '../atoms/Loader';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import classNames from 'classnames';
 import { DataList } from '@/dto/ApplicationData.dto';
 import ApplicationCard from '../molecules/ApplicationCard';
-import { getApplicationList } from '@/server/application';
+import { getApplicationList, lockApplicationUser } from '@/server/application';
+import InProgressApplicationComponent from '../molecules/InProgressApplicationComponent';
+import AllApplicationComponent from '../molecules/AllApplicationComponent';
+import AwaitingReviewApplicationComponent from '../molecules/AwaitingReviewApplicationComponent';
+import DefferedApplicationComponent from '../molecules/DefferedApplicationComponent';
 
 export default function InboxComponent() {
   const router = useRouter();
-  const [page, setPage] = useState(1);
-  const [applications, setApplications] = useState<DataList[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const isInitialMount = useRef(true);
 
-  useEffect(() => {
-    if (isInitialMount.current) {
-      getApplicationDataList();
-      isInitialMount.current = false;
-    }
-  }, []);
-  async function getApplicationDataList() {
-    let response = await getApplicationList(page, 5);
+  const [activeTab, setActiveTab] = useState(InitiatorApplicationStatus.ALL);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Fetch application data list
+
+
+  // Lock application function
+  async function lockApplication(trackingId: string, status: string) {
+    const response = await lockApplicationUser(trackingId);
     if (response.error && response.error.length > 0) {
-      response.error.forEach((err) => {
+      response.error.forEach((err: any) => {
         toast.error(`Error ${err.code}: ${err.description}`);
       });
     } else {
-      const newApplications = response.data?.dataList as DataList[];
-      if (newApplications.length === 0) {
-        setHasMore(false);
-      } else {
-        setApplications((prevApplications) => [
-          ...prevApplications,
-          ...newApplications,
-        ]);
-
-        setPage(page + 1);
-      }
+      const query = `?trackingId=${trackingId}&status=${status}`;
+      router.push(`${Pages.APPLICATIONREVIEW}${query}`);
     }
   }
+
 
 
 
@@ -55,83 +46,56 @@ export default function InboxComponent() {
             Applications Inbox
           </p>
         </div>
-        {/* <div className="mt-3 flex justify-center">
-          <p className="text-xs text-logoColorGreen lg:text-base">
-            Sign up to enjoy all the benefits of visa
-          </p>
-        </div> */}
 
         <div className="mt-20">
-          {/* <div className='flex justify-center'>
-            <div className={classNames("mb-10 flex justify-end")}>
-              <button
-                onClick={() => {
-                  const query = `?trackingId=`;
-                  // router.push(`${Pages.PLANNING}${query}`);
-                }}
-              >
-                <div className="rounded-md bg-logoColorGreen px-5 py-3 text-white">
-                  <p className="text-sm font-semibold flex items-center gap-x-2">
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                      >
-                        <g>
-                          <g
-                            fill="none"
-                            stroke="#ffff"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            data-name="add"
-                          >
-                            <path strokeLinecap="round" d="M12 19L12 5"></path>
-                            <path d="M5 12L19 12"></path>
-                          </g>
-                        </g>
-                      </svg>
-                    </span>
-                    Start New Application
-                  </p>
-                </div>
-              </button>
-            </div>
-          </div> */}
+          <div className="container mx-auto">
+            <div className="flex justify-center mb-6">
+              <div className='w-full flex flex-wrap justify-between'>
+                <div className="flex ps-2 flex-wrap gap-x-4 mt-2">
+                  {[InitiatorApplicationStatus.ALL, InitiatorApplicationStatus.INPROGRESS, InitiatorApplicationStatus.AWAITINGREVIEW, InitiatorApplicationStatus.DEFFERED,
 
-          <InfiniteScroll
-            dataLength={applications.length}
-            next={page > 1 ? getApplicationDataList : () => { }}
-            hasMore={hasMore}
-            loader={<Loader />}
-            endMessage={
-              <div className="flex cursor-pointer justify-center">
-                <div className="my-10 w-7/12 rounded-xl text-center opacity-90 drop-shadow-[0px_10px_25px_rgba(0,10,10,10)]">
-                  <p className="text-3xl font-bold text-logoColorBlue">
-                    {applications.length > 0 ? "No more applications found" : "No applications found"}
-                  </p>
+                  ].map(tab => (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`px-4 py-2 mt-2 text-sm md:text-base font-semibold rounded-lg transition-all duration-300 ${activeTab === tab
+                        ? 'bg-logoColorGreen text-white shadow-lg'
+                        : 'bg-white text-gray-700 border border-logoColorGreen hover:bg-logoColorBlue hover:text-white'
+                        }`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex mt-2 ps-2 items-center">
+                  <input
+                    type="text"
+                    placeholder="Search applications..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="px-3 py-2 text-xs md:text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-logoColorGreen"
+                  />
                 </div>
               </div>
-            }
-            style={{ overflow: 'unset' }}
-          >
+            </div>
+
+            <div className='h-[0.5px] mt-2 mb-7 bg-slate-400'></div>
             {
-              applications.map((application, index) => (
-                <div
-                  className="flex justify-center"
-                  key={index}
-                  onClick={() => {
-                    const query = `?trackingId=${application.trackingId}&lastSection=${application.lastSection}`;
-                    router.push(`${Pages.APPLICATIONREVIEW}${query}`);
-                  }}
-                >
-                  <ApplicationCard application={application} />
-                </div>
-              ))
+              activeTab === InitiatorApplicationStatus.ALL &&
+              <AllApplicationComponent lockApplication={lockApplication} />
             }
-          </InfiniteScroll>
-          {/* )} */}
+            {
+              activeTab === InitiatorApplicationStatus.INPROGRESS &&
+              <InProgressApplicationComponent lockApplication={lockApplication} />
+            }
+            {
+              activeTab === InitiatorApplicationStatus.AWAITINGREVIEW &&
+              <AwaitingReviewApplicationComponent lockApplication={lockApplication} />
+            }{
+              activeTab === InitiatorApplicationStatus.DEFFERED &&
+              <DefferedApplicationComponent lockApplication={lockApplication} />
+            }
+          </div>
         </div>
       </div>
     </div>

@@ -4,19 +4,16 @@ import {
   personalDetailsDto,
 } from '@/dto/ApplicationData.dto';
 import Image from 'next/image';
+import { capitalizeFirstLetter } from '@/constants/functions';
 
 interface Props {
   personalFormValues: personalDetailsDto;
-  countires: any;
   sex: any;
   maritalStatus: any;
-  occupation: any;
 }
 export default function ReviewPersonalDetailsComponent({
   personalFormValues,
-  countires,
   maritalStatus,
-  occupation,
   sex,
 }: Props) {
   return (
@@ -35,7 +32,7 @@ export default function ReviewPersonalDetailsComponent({
         </div>
       </div>
 
-      <div className="mt-5 flex w-full items-center justify-center gap-x-44 lg:flex-row flex-col">
+      <div className="mt-5 flex w-full items-center justify-center gap-x-44 md:flex-row flex-col">
         <InputComponent
           label={'First Name'}
           maxLength={32}
@@ -44,7 +41,7 @@ export default function ReviewPersonalDetailsComponent({
           placeholder={''}
           name={'firstName'}
           value={personalFormValues.firstName}
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           disabled
@@ -59,13 +56,13 @@ export default function ReviewPersonalDetailsComponent({
           placeholder={''}
           name={'lastName'}
           value={personalFormValues.lastName}
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4 mt-3 md:mt-0"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           required
         />
       </div>
-      <div className="mt-4 flex w-full items-center justify-center gap-x-44 lg:flex-row flex-col">
+      <div className="mt-4 flex w-full items-center justify-center gap-x-44 md:flex-row flex-col">
         <InputComponent
           label={'Birth Date'}
           maxLength={32}
@@ -74,7 +71,7 @@ export default function ReviewPersonalDetailsComponent({
           placeholder={''}
           name={'birthDate'}
           value={personalFormValues.birthDate}
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           disabled
@@ -89,13 +86,13 @@ export default function ReviewPersonalDetailsComponent({
           placeholder={''}
           name={'birthCity'}
           value={personalFormValues.birthCity}
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4 mt-3 md:mt-0"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           required
         />
       </div>
-      <div className="mt-4 flex w-full items-center justify-center gap-x-44 lg:flex-row flex-col">
+      <div className="mt-4 flex w-full items-center justify-center gap-x-44 md:flex-row flex-col">
         <InputComponent
           label={'Birth Country'}
           maxLength={32}
@@ -104,12 +101,9 @@ export default function ReviewPersonalDetailsComponent({
           placeholder={''}
           name={'birthCountry'}
           value={
-            countires.find(
-              (country: any) =>
-                country.value === personalFormValues.birthCountry,
-            )?.label
+            capitalizeFirstLetter(personalFormValues.birthCountryName || '')
           }
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           disabled
@@ -128,14 +122,14 @@ export default function ReviewPersonalDetailsComponent({
                 status.value === personalFormValues.maritalStatus,
             )?.label
           }
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4 mt-3 md:mt-0"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           disabled
           required
         />
       </div>
-      <div className="mt-4 flex w-full items-center justify-center gap-x-44 lg:flex-row flex-col">
+      <div className="mt-4 flex w-full items-center justify-center gap-x-44 md:flex-row flex-col">
         <InputComponent
           label={'Sex'}
           maxLength={32}
@@ -147,7 +141,7 @@ export default function ReviewPersonalDetailsComponent({
             sex.find((gender: any) => gender.value === personalFormValues.sex)
               ?.label
           }
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           disabled
@@ -161,19 +155,16 @@ export default function ReviewPersonalDetailsComponent({
           placeholder={''}
           name={'nationality'}
           value={
-            countires.find(
-              (country: any) =>
-                country.value === personalFormValues.nationality,
-            )?.label
+            capitalizeFirstLetter(personalFormValues.nationalityName || '')
           }
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4 mt-3 md:mt-0"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           disabled
           required
         />
       </div>
-      <div className="mt-4 flex w-full items-center justify-center gap-x-44 lg:flex-row flex-col">
+      <div className="mt-4 flex w-full items-center justify-center gap-x-44 md:flex-row flex-col">
         <InputComponent
           label={'Issuing Country'}
           maxLength={32}
@@ -182,12 +173,9 @@ export default function ReviewPersonalDetailsComponent({
           placeholder={''}
           name={'issuingCountry'}
           value={
-            countires.find(
-              (country: any) =>
-                country.value === personalFormValues.issuingCountry,
-            )?.label
+            capitalizeFirstLetter(personalFormValues.issuingCountryName || '')
           }
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           disabled
@@ -201,14 +189,14 @@ export default function ReviewPersonalDetailsComponent({
           placeholder={''}
           name={'passportNumber'}
           value={personalFormValues.passportNumber}
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4 mt-3 md:mt-0"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           disabled
           required
         />
       </div>
-      <div className="mt-4 flex w-full items-center justify-center gap-x-44 lg:flex-row flex-col">
+      <div className="mt-4 flex w-full items-center justify-center gap-x-44 md:flex-row flex-col">
         <InputComponent
           label={'Occupation'}
           maxLength={32}
@@ -217,11 +205,9 @@ export default function ReviewPersonalDetailsComponent({
           placeholder={''}
           name={'issuingCountry'}
           value={
-            occupation.find(
-              (job: any) => job.value === personalFormValues.occupation,
-            )?.label
+            capitalizeFirstLetter(personalFormValues.occupationName + ' Job' || '')
           }
-          className="w-1/2 lg:w-1/4"
+          className="w-3/4 md:w-1/4"
           onChange={(e: ChangeEvent<HTMLInputElement>) => console.log(e)}
           error={''}
           disabled

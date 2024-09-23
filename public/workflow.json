@@ -1,0 +1,22 @@
+[
+    {
+      "id": 1,
+      "name": "Workflow 1",
+      "type": "General",
+      "priority": 1
+    },
+    {
+      "id": 2,
+      "name": "Workflow 2",
+      "type": "Visa",
+      "priority": 2
+
+    },
+    {
+        "id": 3,
+        "name": "Workflow 3",
+        "type": "Country",
+        "priority": 3
+
+    }
+  ]

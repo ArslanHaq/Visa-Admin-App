@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from 'react';
 import { Handle, Position } from '@xyflow/react';
 
@@ -13,7 +14,7 @@ const CustomNodeComponent = ({ id, data, deleteNode, isMainNode }: any) => {
     }, [label, heading, data, isMainNode]);
 
     return (
-        <div className="px-2 py-2 border border-gray-300 rounded-md bg-logoColorBlue relative flex flex-col items-center text-center">
+        <div className="px-2 py-4 border border-gray-300 rounded-md bg-logoColorGreen relative flex flex-col items-center text-center">
             {isMainNode && (
                 <input
                     type="text"
@@ -31,7 +32,7 @@ const CustomNodeComponent = ({ id, data, deleteNode, isMainNode }: any) => {
             />
             <button
                 onClick={() => deleteNode(id)}
-                className="absolute top-1 right-2 bg-logoColorGreen text-white rounded-full text-xs py-1 px-2 flex items-center justify-center cursor-pointer"
+                className="absolute -top-0 right-3  text-white rounded-full text-base font-bold font-sans  flex items-center justify-center cursor-pointer"
             >
                 x
             </button>

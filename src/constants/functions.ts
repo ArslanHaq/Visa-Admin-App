@@ -1,5 +1,6 @@
 import { SignInDto } from "@/dto/SignIn.dto";
 import { Dispatch, SetStateAction } from "react";
+import { toast } from "react-toastify";
 
 export const handleChangeSignIn = (
   e: React.ChangeEvent<HTMLInputElement>,
@@ -61,9 +62,6 @@ export const validateEmail = (value: string) => {
   }
 };
 
-export const capitalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
 export function formatCurrency(
   amount: number,
   currency: string = "USD",
@@ -74,3 +72,41 @@ export function formatCurrency(
     currency: currency,
   }).format(amount);
 }
+
+export async function handleFetch<T>(
+  fetchFunction: (
+    trackingId: string
+  ) => Promise<{ data: { data: T } | null; error: any[] | null }>,
+  trackingId: string,
+  detailName: string
+): Promise<T | null> {
+  const result = await fetchFunction(trackingId);
+  if (result.error && result.error.length > 0) {
+    result.error.forEach((err: any) => {
+      toast.error(`${detailName} Error ${err.code}: ${err.description}`);
+    });
+    return null;
+  } else {
+    if (!result.data?.data) return null;
+    return result.data.data;
+  }
+}
+
+export function capitalizeWords(str: string | null | undefined): string {
+  // Check if the input is null or undefined and return an empty string or a default value
+  if (str == null) {
+    return "";
+  }
+
+  // Capitalize the first letter of each word in the string
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+export const capitalizeFirstLetter = (
+  str: string | null | undefined
+): string => {
+  if (str == null) {
+    return "";
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};

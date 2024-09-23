@@ -1,13 +1,9 @@
 'use client';
-import Link from 'next/link';
-
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Pages } from '@/constants/constants';
 import { handleChangeSignIn } from '@/constants/functions';
 import { useSignIn } from '@/hooks/useSignIn';
-// import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import ArrowRightSvg from '../atoms/Svg/ArrowRight';
 import { OriginDto } from '../organisms/Signup.dto';
 import InputComponent from '../atoms/InputComponent';
 import classNames from 'classnames';
@@ -19,7 +15,9 @@ interface Props {
 }
 export default function SignInLeftContainerComponent({ origin }: Props) {
   const router = useRouter();
-  const coatSrc = origin.data?.coat.replace('+html', '+xml');
+  const coatSrc = origin.data?.coat
+    ? String(origin.data?.coat).replace('+html', '+xml')
+    : '';
 
   const { formValues, errors, setFormValues, setErrors, handleSubmit } =
     useSignIn();
@@ -35,7 +33,7 @@ export default function SignInLeftContainerComponent({ origin }: Props) {
     <>
       <form
         onSubmit={handleSubmit}
-        className="flex h-screen justify-center items-center"
+        className="flex md:h-screen justify-center items-center"
       >
         <div className="w-full">
           <div className="mb-10 -mt-5 -ml-10 flex justify-center">

@@ -15,6 +15,12 @@ export interface ApplicationDataDto {
     countryName: string;
     currencyName: string;
   };
+  visaTypeDescription?: string;
+  visaSubTypeDescription?: string;
+  entryType?: string;
+  durationId?: string;
+  duration?: string;
+  nationalityName?: string;
 }
 export interface ApplicationDataRequestDto {
   visaType: string;
@@ -24,6 +30,13 @@ export interface ApplicationDataRequestDto {
   visaCurrency: string;
   trackingId?: string;
   status?: string;
+  visaTypeDescription?: string;
+  visaSubTypeDescription?: string;
+  entryType?: string;
+  durationId?: string;
+  duration?: string;
+  nationalityName?: string;
+  expiryDate?: string;
 }
 export interface ApplicationRequestDto {
   data: ApplicationDataDto | null;
@@ -33,6 +46,7 @@ export interface ApplicationRequestDto {
 export interface visaTypeDto {
   visaType: string;
   description: string;
+  isActive: string;
 }
 export interface visaTypeResponse {
   data: visaTypeDto[];
@@ -46,12 +60,16 @@ export interface personalDetailsDto {
   birthDate: string;
   birthCity: string;
   birthCountry: string;
+  birthCountryName?: string;
   sex: string;
   maritalStatus: string;
   nationality: string;
+  nationalityName?: string;
   passportNumber: string;
   issuingCountry: string;
+  issuingCountryName?: string;
   occupation: string;
+  occupationName?: string;
   photographBase64: string;
 }
 
@@ -70,6 +88,14 @@ export interface ContactDetailsDto {
   city: string;
   postalCode: string;
   country: string;
+  countryName?: string;
+  socialMedia: SocialMediaLinks[];
+}
+
+export interface SocialMediaLinks {
+  trackingId: string;
+  link: string;
+  socialMediaApp: string;
 }
 
 export interface ApplicationResponseDto {
@@ -115,6 +141,7 @@ export interface TravelHistory {
   travelDate: string;
   finalDestination: string;
   travelPurpose: string;
+  finalDestinationName?: string;
 }
 
 export interface InboxDto {
@@ -140,4 +167,42 @@ export interface DataList {
   visaFee: string;
   visaCurrency: string;
   lastSection: string;
+}
+
+export interface StakeholderData {
+  referenceId: number;
+  trackingId: string;
+  stakeholderId: number;
+  stakeholderDesc: string;
+  comments: string;
+  status: string;
+}
+
+export interface StackholdersResponse {
+  data: {
+    data: StakeholderData[] | null;
+    error: any[] | null;
+  };
+  error: any | null;
+}
+
+export interface DocumentDataType {
+  documentId: number;
+  documentName: string;
+}
+
+export interface DocumentData {
+  interviewRequired: string | null;
+  otherRequirements: string[] | null;
+  documents: DocumentDataType[] | null;
+}
+
+interface Data {
+  data: DocumentData | null;
+  error: any[];
+}
+
+export interface BuisnessDataResponse {
+  data: Data;
+  error: any | null;
 }

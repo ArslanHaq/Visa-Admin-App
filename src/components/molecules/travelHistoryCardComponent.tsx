@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import InputComponent from '../atoms/InputComponent';
 import { TravelHistory } from '@/dto/ApplicationData.dto';
+import { set } from 'animejs';
 import classNames from 'classnames';
 import Select from 'react-select';
 import { Colors } from '@/constants/constants';
@@ -87,8 +88,8 @@ export default function TravelHistoryCardComponent({
     setSelectedTravelPurpose(selectedOption);
   }
   return (
-    <div className="flex w-full items-center justify-center gap-x-5 flex-col lg:flex-row">
-      <div className="flex w-1/2 lg:w-1/6">
+    <div className="flex w-full items-center justify-center gap-x-5 flex-col md:flex-row">
+      <div className="flex w-3/4 md:w-1/6">
         <InputComponent
           label={index === 0 ? 'Travel Date' : ''}
           maxLength={30}
@@ -111,7 +112,7 @@ export default function TravelHistoryCardComponent({
       </div>
       <div
         className={classNames(
-          'w-1/2 lg:w-1/6',
+          'w-3/4 md:w-1/6',
           { hidden: !showbutton },
           { block: showbutton },
         )}
@@ -131,7 +132,7 @@ export default function TravelHistoryCardComponent({
       </div>
       <div
         className={classNames(
-          'flex w-1/2 lg:w-1/6',
+          'flex w-3/4 md:w-1/6',
           { hidden: showbutton },
           { block: !showbutton },
         )}
@@ -144,9 +145,7 @@ export default function TravelHistoryCardComponent({
           placeholder={'Enter your travel Date'}
           name={'travelDate'}
           value={
-            countries.find(
-              (item: any) => item.value === travelHistory.finalDestination,
-            )?.label
+            travelHistory.finalDestinationName || ''
           }
           className="w-full"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -161,7 +160,7 @@ export default function TravelHistoryCardComponent({
       </div>
       <div
         className={classNames(
-          'w-1/2 lg:w-1/6',
+          'w-3/4 md:w-1/6',
           { hidden: !showbutton },
           { block: showbutton },
         )}
@@ -181,7 +180,7 @@ export default function TravelHistoryCardComponent({
       </div>
       <div
         className={classNames(
-          'flex w-1/2 lg:w-1/6',
+          'flex w-3/4 md:w-1/6',
           { hidden: showbutton },
           { block: !showbutton },
         )}
@@ -214,7 +213,7 @@ export default function TravelHistoryCardComponent({
           <div className="flex w-full">
             <button
               className={classNames(
-                'rounded-lg px-3 py-2',
+                'rounded-md px-3 py-2',
                 {
                   'bg-red-500': !showbutton,
                 },

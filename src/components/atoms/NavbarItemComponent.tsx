@@ -25,7 +25,7 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
       onClick={onClick}
     >
       <span
-        className={classNames(`text-xs lg:text-base ${active ? 'underline decoration-logoColorGreen decoration-2 underline-offset-8' : ''}, `, {
+        className={classNames(`text-sm lg:text-base ${active ? 'underline decoration-logoColorGreen decoration-2 underline-offset-8' : ''}, `, {
           'cursor-default, text-slate-200': disabled
         }, {
           'cursor-pointer text-logoColorBlue hover:text-logoColorGreen ': !disabled

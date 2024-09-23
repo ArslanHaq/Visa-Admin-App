@@ -1,12 +1,14 @@
+"use client";
 import { validateSignInForm } from "@/constants/functions";
 import { SignInDto } from "@/dto/SignIn.dto";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Pages } from "@/constants/constants";
-import { signIn } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 
 export const useSignIn = () => {
+  const { data: session } = useSession();
   const router = useRouter();
   const [formValues, setFormValues] = useState<SignInDto>({
     userName: "",
@@ -27,14 +29,20 @@ export const useSignIn = () => {
         redirect: false,
         username: formValues.userName,
         password: formValues.password,
-        callbackUrl: `${window.location.origin}${Pages.INBOX}`,
+        // callbackUrl: `${Pages.INBOX}`,
       });
       if (result?.error) {
         toast.error(`Invalid Credentials`);
       } else {
-        toast.success("Login successful");
         resetForm();
-        router.push(Pages.INBOX);
+        const session = await getSession();
+        toast.success("Login successful");
+        if (session?.user.roles.includes("admin")) {
+          router.push(Pages.USERS);
+        } else {
+          router.push(Pages.INBOX);
+        }
+        // }
       }
     }
   };

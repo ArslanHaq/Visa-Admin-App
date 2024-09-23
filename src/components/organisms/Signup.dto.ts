@@ -39,11 +39,16 @@ export interface OriginDto {
   } | null;
   error: any[];
 }
-export interface OccupationDto {
-  data: { occupationId: number; description: string }[];
+export interface OccupationResponse {
+  data: OccupationDto[];
   error: any[];
 }
 
+export interface OccupationDto {
+  occupationId: number;
+  description: string;
+  isActive: string;
+}
 export interface CoatOfArmsResponse {
   data: CoatOfArmsDto[] | null;
   error: any[];
