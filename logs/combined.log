@@ -46007,3 +46007,19 @@
 2024-09-13 17:56:39 [INFO]: Successfully fetched visa types.
 2024-09-13 17:56:39 [INFO]: Fetching visa types from api/Feeders/VisaTypes
 2024-09-13 17:56:39 [INFO]: Successfully fetched visa types.
+2025-04-28 16:18:41 [INFO]: Fetching country origin data from api/Feeders/Origin
+2025-04-28 16:18:51 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:18:52 [INFO]: Fetching country origin data from api/Feeders/Origin
+2025-04-28 16:19:02 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:20:48 [INFO]: Fetching country origin data from api/Feeders/Origin
+2025-04-28 16:20:49 [INFO]: Fetching country origin data from api/Feeders/Origin
+2025-04-28 16:20:58 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:20:58 [INFO]: Fetching country origin data from api/Feeders/Origin
+2025-04-28 16:20:59 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:20:59 [INFO]: Fetching country origin data from api/Feeders/Origin
+2025-04-28 16:20:59 [INFO]: Fetching country origin data from api/Feeders/Origin
+2025-04-28 16:20:59 [INFO]: Fetching country origin data from api/Feeders/Origin
+2025-04-28 16:21:08 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:21:09 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:21:09 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:21:09 [ERROR]: Error in getCountryOrigin: fetch failed

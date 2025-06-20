@@ -1631,3 +1631,11 @@
 2024-09-13 14:45:26 [ERROR]: Error in getCountryOrigin: Cookies can only be modified in a Server Action or Route Handler. Read more: https://nextjs.org/docs/app/api-reference/functions/cookies#cookiessetname-value-options
 2024-09-13 14:50:43 [ERROR]: Error in getCountryOrigin: Cookies can only be modified in a Server Action or Route Handler. Read more: https://nextjs.org/docs/app/api-reference/functions/cookies#cookiessetname-value-options
 2024-09-13 14:55:14 [ERROR]: Error in getCountryOrigin: Cookies can only be modified in a Server Action or Route Handler. Read more: https://nextjs.org/docs/app/api-reference/functions/cookies#cookiessetname-value-options
+2025-04-28 16:18:51 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:19:02 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:20:58 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:20:59 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:21:08 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:21:09 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:21:09 [ERROR]: Error in getCountryOrigin: fetch failed
+2025-04-28 16:21:09 [ERROR]: Error in getCountryOrigin: fetch failed
