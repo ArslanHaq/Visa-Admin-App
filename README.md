@@ -1,40 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Online Visa Application: Admin App
 
-## Getting Started
+The staff-facing side of an online visa application system. Admins set up visa types, workflows and business rules. Verifiers and decision makers review applications and documents. The applicant side is in [Visa-Web-App](https://github.com/ArslanHaq/Visa-Web-App).
 
-First, run the development server:
+## Features
+
+- **Visual workflow builder:** design review workflows with React Flow, using custom, resizable nodes
+- **Libraries:** manage countries, occupations, visa types and sub-types, and durations
+- **Business rules:** create, view and review the rules applied to applications
+- **Role-based review:** separate inboxes and review screens for verifiers and decision makers, with approve, reject, refer and defer actions
+- **Application review:** personal, contact, financial and travel details, travel history, and documents with PDF preview
+- **Users and stakeholders:** add and edit users and stakeholders
+- **Access control:** NextAuth sign-in, route protection and a forbidden page for unauthorised roles
+- **Logging** with winston
+
+## Tech stack
+
+Next.js 14 (App Router) · React · TypeScript · Tailwind CSS · NextAuth · React Flow (`@xyflow/react`) · Axios · react-pdf · winston
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env   # then fill in the values below
+npm run dev            # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment variables
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_BACKEND_URL` | Base URL of the visa backend API |
+| `NEXT_PUBLIC_BACKEND_PROCESS_URL` | Base URL of the workflow and process service |
+| `NEXTAUTH_SECRET` | NextAuth secret. Generate one with `openssl rand -base64 32` |
+| `NEXTAUTH_URL` | Public URL of the app (needed in production) |
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Scripts
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the dev server on port 3000 |
+| `npm run build` / `npm start` | Production build, served on port 3001 |
+| `npm run lint` | Run ESLint |
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Project structure
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+src/
+  app/            Routes: sign-in, inbox, application reviews, workflow, libraries, business rules, users, documents
+  components/     UI organised as atoms, molecules and organisms
+  utils/          Logger and helpers
+  middleware.ts   Route protection
+```
